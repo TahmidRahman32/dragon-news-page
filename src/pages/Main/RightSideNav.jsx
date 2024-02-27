@@ -5,19 +5,42 @@ import zone1 from "../../../public/qZone1.png";
 import zone2 from "../../../public/qZone2.png";
 import zone3 from "../../../public/qZone3.png";
 import "../../style/style.css";
+import { useContext } from "react";
+import { authContext } from "../../provider/AuthProvider";
 
 const RightSideNav = () => {
+   const { handleGoogle, handleGithubProvider } = useContext(authContext);
+
+   const handleGooglePopup =()=>{
+         handleGoogle()
+         .then(result =>{
+            console.log(result.user);
+         })
+         .catch(error =>{
+            console.log(error);
+         })
+   }
+
+   const handleGitHub =() =>{
+      handleGithubProvider()
+         .then((result) => {
+            console.log(result.user);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   }
    return (
       <div className="sticky">
          <div>
             <h2 className="text-2xl font-bold mb-4">Login with</h2>
-            <a className="w-full flex items-center border justify-center text-xl py-1 mb-1 rounded">
+            <a onClick={handleGooglePopup} className="w-full flex items-center border justify-center text-xl py-1 mb-1 rounded">
                <span className="mx-2 text-xl">
                   <FcGoogle />
                </span>
                Google
             </a>
-            <a className="w-full flex items-center border justify-center text-xl py-1 rounded">
+            <a onClick={handleGitHub} className="w-full flex items-center border justify-center text-xl py-1 rounded">
                <span className="mx-2 text-xl">
                   <FaGithub />
                </span>
