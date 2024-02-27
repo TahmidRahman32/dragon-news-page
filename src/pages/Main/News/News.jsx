@@ -1,10 +1,10 @@
 import { FaRegBookmark, FaStar } from "react-icons/fa6";
 import { CiShare2 } from "react-icons/ci";
 import { IoEyeSharp } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const News = ({ news }) => {
-   console.log(news);
-   const { author, image_url, total_view, rating, title, details } = news;
+   const { author, image_url, total_view, rating, title, details, _id } = news;
    return (
       <div className="shadow-lg my-16 px-4">
          <div className="flex items-center justify-between bg-slate-800 my-1 rounded px-4 py-2 ">
@@ -29,9 +29,17 @@ const News = ({ news }) => {
             <img className="w-full" src={image_url} alt="" />
          </div>
          <div>
-            <p className="py-4">
-               {details.slice(0, 200)}..... <span className="text-yellow-600">Read More</span>
-            </p>
+            {details.length > 200 ? (
+               <span>
+                  {details.slice(0, 200)}....
+                  <Link to={`/news/${_id}`} className="text-yellow-600 my-2">
+                     Read More
+                  </Link>
+               </span>
+            ) : (
+               <span>{details}</span>
+            )}
+
             <hr />
             <div className="py-3 flex justify-between">
                <p className="flex gap-2 items-center ">

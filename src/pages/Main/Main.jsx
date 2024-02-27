@@ -14,7 +14,7 @@ const Main = () => {
          <h3 className="text-2xl font-semibold">Dragon News Home</h3>
          <div>
             {newses.map((news) => (
-               <News news={news} key={news.id}></News>
+               <News news={news} key={news._id}></News>
             ))}
          </div>
       </div>

@@ -8,6 +8,8 @@ import Header from "../../sheard/Header/Header";
 const Register = () => {
    const [showPass, setShowPass] = useState(false);
    const [showPass1, setShowPass1] = useState(false);
+   const [registerError, setRegisterError] = useState("");
+   const [success, setSuccess] = useState("");
 
    const { crateUser } = useContext(authContext);
 
@@ -19,12 +21,16 @@ const Register = () => {
       const password1 = e.target.password1.value;
       const name = e.target.name.value;
       console.log(email, password, password1, name);
+      setRegisterError("");
+      setSuccess('');
       crateUser(email, password)
          .then((result) => {
             console.log(result.user);
+            setSuccess("Create a User Successfully");
          })
          .catch((error) => {
             console.log(error);
+            setRegisterError(error.message);
          });
    };
 
@@ -62,16 +68,20 @@ const Register = () => {
                         <label className="label">
                            <span className="label-text">Password</span>
                         </label>
-                        <div className="relative" onClick={() => setShowPass(!showPass)}>
+                        <div className="relative">
                            <input type={showPass ? "text" : "password"} placeholder="password" name="password" className="input input-bordered w-72" required />
-                           <span className="absolute top-4 right-2">{showPass ? <IoEyeSharp /> : <FaEyeSlash />}</span>
+                           <span onClick={() => setShowPass(!showPass)} className="absolute top-4 right-2">
+                              {showPass ? <IoEyeSharp /> : <FaEyeSlash />}
+                           </span>
                         </div>
                         <label className="label">
                            <span className="label-text">Confirm Password</span>
                         </label>
-                        <div className="relative" onClick={() => setShowPass1(!showPass1)}>
+                        <div className="relative">
                            <input type={showPass1 ? "text" : "password"} placeholder="password" name="password1" className="input input-bordered w-72" required />
-                           <span className="absolute top-4 right-2">{showPass1 ? <IoEyeSharp /> : <FaEyeSlash />}</span>
+                           <span onClick={() => setShowPass1(!showPass1)} className="absolute top-4 right-2">
+                              {showPass1 ? <IoEyeSharp /> : <FaEyeSlash />}
+                           </span>
                         </div>
                         <label className="label">
                            <a href="#" className="label-text-alt link link-hover">
@@ -83,6 +93,8 @@ const Register = () => {
                         <button className="btn btn-primary">Register</button>
                      </div>
                   </form>
+                  {registerError && <p className="text-red-600 px-4 text-center">{registerError}</p>}
+                  {success && <p className="text-green-600 px-4 text-center">{success}</p>}
                   <p className=" py-4 px-4">
                      you have already account
                      <Link className="text-blue-500 mx-2 hover:underline" to={"/login"}>

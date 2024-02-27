@@ -1,12 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../../sheard/Header/Header";
+import { useContext, useState } from "react";
+import { authContext } from "../../provider/AuthProvider";
 
 const Login = () => {
+   const [loginError, setLoginError] = useState("");
+   const [success, setSuccess] = useState("");
+   const { handleSignIn } = useContext(authContext);
+   const location = useLocation();
+   const navigate = useNavigate();
+
+   console.log("is cumming", location);
    const handleLogin = (e) => {
       e.preventDefault();
       const email = e.target.email.value;
       const password = e.target.password.value;
-      console.log(email, password);
+
+      setLoginError("");
+      setSuccess("");
+      handleSignIn(email, password)
+         .then((result) => {
+            console.log(result.user);
+            setSuccess("Login Successfully");
+
+            navigate(location?.state ? location.state : "/");
+         })
+         .catch((error) => {
+            console.log(error);
+            setLoginError(error.message);
+         });
    };
    return (
       <div>
@@ -39,6 +61,8 @@ const Login = () => {
                         <button className="btn btn-primary">Login</button>
                      </div>
                   </form>
+                  {loginError && <p className="text-red-600 px-4 text-center">{loginError} please Register</p>}
+                  {success && <p className="text-green-600 px-4 text-center">{success}</p>}
                   <p className=" py-4 px-4">
                      Please
                      <Link className="text-blue-500 mx-2 hover:underline" to={"/register"}>
